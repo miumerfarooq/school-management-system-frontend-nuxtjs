@@ -1,6 +1,9 @@
+<script setup lang="ts">
+const message = 'Hello, World!'
+</script>
+
 <template>
-  <div>
-    <NuxtRouteAnnouncer />
-    <NuxtWelcome />
-  </div>
+  <UApp>
+    {{ message }}
+  </UApp>
 </template>
