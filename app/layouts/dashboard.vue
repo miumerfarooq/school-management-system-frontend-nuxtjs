@@ -1,9 +1,15 @@
 <script setup lang="ts">
-import type { NavigationMenuItem } from '@nuxt/ui';
+import type { DropdownMenuItem, NavigationMenuItem } from '@nuxt/ui';
 
 defineProps<{
   mode: 'drawer' | 'slideover' | 'modal'
 }>()
+
+const open = ref(false)
+
+defineShortcuts({
+  n: () => open.value = !open.value
+})
 
 const items: NavigationMenuItem[][] = [
   [
@@ -43,6 +49,73 @@ const items: NavigationMenuItem[][] = [
     }
   ]
 ]
+
+const items2 = ref<DropdownMenuItem[][]>([
+  [
+    {
+      label: 'Umer Farooq',
+      avatar: {
+        src: 'https://github.com/miumerfarooq.png'
+      },
+      type: 'label'
+    }
+  ],
+  [
+    { label: 'Profile', icon: 'i-lucide-user' },
+    { label: 'Billing', icon: 'i-lucide-credit-card' },
+    { label: 'Settings', icon: 'i-lucide-cog', kbds: [','] },
+    { label: 'Keyboard shortcuts', icon: 'i-lucide-monitor' }
+  ],
+  [
+    { label: 'Team', icon: 'i-lucide-users' },
+    {
+      label: 'Invite users',
+      icon: 'i-lucide-user-plus',
+      children: [
+        [
+          { label: 'Email', icon: 'i-lucide-mail' },
+          { label: 'Message', icon: 'i-lucide-message-square' }
+        ],
+        [
+          { label: 'More', icon: 'i-lucide-circle-plus' }
+        ]
+      ]
+    },
+    {
+      label: 'New team',
+      icon: 'i-lucide-plus',
+      kbds: ['meta', 'n'],
+      onSelect() {
+        console.log('Invite by link clicked')
+      }
+    }
+  ],
+  [
+    {
+      label: 'GitHub',
+      icon: 'i-simple-icons-github',
+      to: 'https://github.com/miumerfarooq/school-management-system-frontend-nuxtjs',
+      target: '_blank'
+    },
+    {
+      label: 'Support',
+      icon: 'i-lucide-life-buoy',
+      to: '/docs/components/dropdown-menu'
+    },
+    {
+      label: 'API',
+      icon: 'i-lucide-cloud',
+      disabled: true
+    }
+  ],
+  [
+    {
+      label: 'Logout',
+      icon: 'i-lucide-log-out',
+      kbds: ['shift', 'meta', 'q']
+    }
+  ]
+])
 </script>
 
 <template>
@@ -84,7 +157,7 @@ const items: NavigationMenuItem[][] = [
         <template #footer="{ collapsed }">
           <UButton
             :avatar="{ src: 'https://github.com/miumerfarooq.png' }"
-            :label="collapsed ? undefined : 'Umer'"
+            :label="collapsed ? undefined : 'Umer Farooq'"
             color="neutral"
             variant="ghost"
             class="w-full"
@@ -95,7 +168,25 @@ const items: NavigationMenuItem[][] = [
 
       <UDashboardPanel>
         <template #header>
-          <UDashboardNavbar title="Dashboard" />
+          <UDashboardNavbar title="Dashboard" :ui="{ right: 'gap-3' }">
+            <template #leading>
+              <UDashboardSidebarCollapse />
+            </template>
+
+            <template #right>
+              <UTooltip v-model:open="open" text="Notification">
+                <UButton color="neutral" variant="ghost" square>
+                  <UChip color="error" inset>
+                    <UIcon name="i-lucide-bell" class="size-5 shrink-0" />
+                  </UChip>
+                </UButton>
+              </UTooltip>
+
+              <UDropdownMenu :items="items2">
+                <UButton icon="i-lucide-plus" size="md" class="rounded-full" />
+              </UDropdownMenu>
+            </template>
+          </UDashboardNavbar>
         </template>
       </UDashboardPanel>
     </UDashboardGroup>
