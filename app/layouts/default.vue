@@ -16,6 +16,11 @@ const items = ref<NavigationMenuItem[]>([
     label: 'Contact Us',
     icon: 'i-lucide-contact-round',
     to: '/contact'
+  },
+  {
+    label: 'Dashboard',
+    icon: 'i-lucide-layout-dashboard',
+    to: '/dashboard'
   }
 ])
 </script>
